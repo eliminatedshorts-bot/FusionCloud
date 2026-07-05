@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minecraft Hosting – FusionCloud</title>
+    <style>
+        /* Same base styles as index */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #0b0e1a;
+            color: #eef2f6;
+            line-height: 1.6;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header & Nav (same as index) */
+        header {
+            background: #12172b;
+            padding: 12px 0;
+            border-bottom: 1px solid #2a3150;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f0a500, #ff6f00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+        .logo span {
+            font-weight: 300;
+            color: #8a9bb5;
+            -webkit-text-fill-color: #8a9bb5;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            list-style: none;
+        }
+        .nav-links a {
+            font-weight: 500;
+            font-size: 1rem;
+            color: #c8d0e0;
+            transition: 0.2s;
+        }
+        .nav-links a:hover {
+            color: #f0a500;
+        }
+        .nav-links .discord-btn {
+            background: #5865f2;
+            padding: 6px 16px;
+            border-radius: 20px;
+            color: #fff;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .nav-links .discord-btn:hover {
+            background: #4752c4;
+            color: #fff;
+        }
+        .currency-selector {
+            background: #1e253b;
+            border: 1px solid #2f3755;
+            border-radius: 8px;
+            padding: 4px 8px;
+            color: #c8d0e0;
+            font-weight: 500;
+            font-size: 0.9rem;
+            outline: none;
+            cursor: pointer;
+        }
+        .currency-selector option {
+            background: #12172b;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+        }
+        .hamburger span {
+            display: block;
+            width: 28px;
+            height: 3px;
+            background: #c8d0e0;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        .nav-links.mobile {
+            display: none;
+            flex-direction: column;
+            background: #12172b;
+            position: absolute;
+            top: 70px;
+            left: 0;
+            right: 0;
+            padding: 20px 30px;
+            border-bottom: 1px solid #2a3150;
+            gap: 20px;
+        }
+        .nav-links.mobile.open {
+            display: flex;
+        }
+
+        /* ── Plans Section ── */
+        .plans {
+            padding: 60px 0;
+        }
+        .plans h1 {
+            text-align: center;
+            font-size: 2.6rem;
+            margin-bottom: 8px;
+        }
+        .plans .subtitle {
+            text-align: center;
+            color: #8a9bb5;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+        .plan-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+        }
+        .plan-card {
+            background: #141b30;
+            border-radius: 16px;
+            padding: 28px 20px;
+            border: 1px solid #252e4a;
+            text-align: center;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        .plan-card:hover {
+            border-color: #f0a500;
+            transform: translateY(-4px);
+        }
+        .plan-card .plan-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .plan-card .plan-price {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #f0a500;
+            margin: 12px 0;
+        }
+        .plan-card .plan-price small {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #8a9bb5;
+        }
+        .plan-card .plan-features {
+            list-style: none;
+            margin: 16px 0;
+            flex: 1;
+        }
+        .plan-card .plan-features li {
+            padding: 4px 0;
+            color: #b0bed4;
+            font-size: 0.95rem;
+        }
+        .plan-card .badge {
+            background: #2a3150;
+            color: #f0a500;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 8px;
+        }
+        .plan-card .coming-soon {
+            background: #1e253b;
+            color: #f0a500;
+            border: 1px dashed #f0a500;
+        }
+        .btn-plan {
+            background: #f0a500;
+            color: #0b0e1a;
+            border: none;
+            padding: 12px 0;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: default;
+            transition: 0.2s;
+            margin-top: 12px;
+        }
+        .btn-plan.active {
+            cursor: pointer;
+        }
+        .btn-plan.active:hover {
+            background: #d49400;
+        }
+        .btn-plan.disabled {
+            opacity: 0.6;
+            background: #2a3150;
+            color: #8a9bb5;
+        }
+
+        /* Footer (same) */
+        footer {
+            background: #0a0e1a;
+            padding: 40px 0 20px;
+            border-top: 1px solid #1e253b;
+            margin-top: 40px;
+        }
+        footer .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 30px;
+        }
+        footer .copyright {
+            color: #6a7a94;
+            font-size: 0.9rem;
+        }
+        footer .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+        footer .footer-links a {
+            color: #8a9bb5;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+        footer .footer-links a:hover {
+            color: #f0a500;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .hamburger {
+                display: flex;
+            }
+            .nav-links.mobile {
+                display: none;
+            }
+            .nav-links.mobile.open {
+                display: flex;
+            }
+            .plans h1 {
+                font-size: 2rem;
+            }
+            .currency-selector {
+                margin-right: 10px;
+            }
+        }
+        @media (min-width: 769px) {
+            .nav-links.mobile {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header (identical) -->
+    <header>
+        <div class="container nav-wrap">
+            <div class="logo">Fusion<span>Cloud</span></div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="minecraft.html">Minecraft</a></li>
+                    <li><a href="vps.html">VPS</a></li>
+                    <li><a href="https://discord.gg/EHyjfqydYk" target="_blank" class="discord-btn">Discord</a></li>
+                    <li>
+                        <select class="currency-selector" id="currencySelect">
+                            <option value="INR">₹ INR</option>
+                            <option value="NPR">Rs. NPR</option>
+                        </select>
+                    </li>
+                </ul>
+            </nav>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <ul class="nav-links mobile" id="mobileNav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="minecraft.html">Minecraft</a></li>
+            <li><a href="vps.html">VPS</a></li>
+            <li><a href="https://discord.gg/EHyjfqydYk" target="_blank" class="discord-btn">Discord</a></li>
+            <li>
+                <select class="currency-selector" id="currencySelectMobile">
+                    <option value="INR">₹ INR</option>
+                    <option value="NPR">Rs. NPR</option>
+                </select>
+            </li>
+        </ul>
+    </header>
+
+    <!-- Plans -->
+    <section class="plans">
+        <div class="container">
+            <h1>Minecraft Hosting Plans</h1>
+            <p class="subtitle">Choose the perfect plan for your server — no hidden fees, instant setup.</p>
+            <div class="plan-grid" id="planGrid">
+                <!-- Each plan: data-price-inr is the base INR price; data-name for identification -->
+                <div class="plan-card" data-price-inr="40">
+                    <div class="plan-name">Sasto</div>
+                    <div class="plan-price" data-price="40">₹40 <small>/mo</small></div>
+                    <ul class="plan-features">
+                        <li>✔ Instant deployment</li>
+                        <li>✔ DDoS protection</li>
+                        <li>✔ Full control panel</li>
+                    </ul>
+                    <button class="btn-plan active">Choose Plan</button>
+                </div>
+                <div class="plan-card" data-price-inr="60">
+                    <div class="plan-name">Dirt</div>
+                    <div class="plan-price" data-price="60">₹60 <small>/mo</small></div>
+                    <ul class="plan-features">
+                        <li>✔ Instant deployment</li>
+                        <li>✔ DDoS protection</li>
+                        <li>✔ Mod &amp; plugin support</li>
+                    </ul>
+                    <button class="btn-plan active">Choose Plan</button>
+                </div>
+                <div class="plan-card" data-price-inr="100">
+                    <div class="plan-name">Stone</div>
+                    <div class="plan-price" data-price="100">₹100 <small>/mo</small></div>
+                    <ul class="plan-features">
+                        <li>✔ Instant deployment</li>
+                        <li>✔ DDoS protection</li>
+                        <li>✔ NVMe storage</li>
+                    </ul>
+                    <button class="btn-plan active">Choose Plan</button>
+                </div>
+                <div class="plan-card" data-price-inr="160">
+                    <div class="plan-name">Shulker</div>
+                    <div class="plan-price" data-price="160">₹160 <small>/mo</small></div>
+                    <ul class="plan-features">
+                        <li>✔ Instant deployment</li>
+                        <li>✔ DDoS protection</li>
+                        <li>✔ Full control panel</li>
+                    </ul>
+                    <button class="btn-plan active">Choose Plan</button>
+                </div>
+                <div class="plan-card" data-price-inr="299">
+                    <div class="plan-name">Iron</div>
+                    <div class="plan-price" data-price="299">₹299 <small>/mo</small></div>
+                    <ul class="plan-features">
+                        <li>✔ Instant deployment</li>
+                        <li>✔ DDoS protection</li>
+                        <li>✔ Mod &amp; plugin support</li>
+                    </ul>
+                    <button class="btn-plan active">Choose Plan</button>
+                </div>
+                <div class="plan-card" data-price-inr="399">
+                    <div class="plan-name">Redstone</div>
+                    <div class="plan-price" data-price="399">₹399 <small>/mo</small></div>
+                    <ul class="plan-features">
+                        <li>✔ Instant deployment</li>
+                        <li>✔ DDoS protection</li>
+                        <li>✔ Premium performance</li>
+                    </ul>
+                    <button class="btn-plan active">Choose Plan</button>
+                </div>
+                <div class="plan-card" data-price-inr="580">
+                    <div class="plan-name">Lapis</div>
+                    <div class="plan-price" data-price="580">₹580 <small>/mo</small></div>
+                    <ul class="plan-features">
+                        <li>✔ Instant deployment</li>
+                        <li>✔ DDoS protection</li>
+                        <li>✔ Advanced control</li>
+                    </ul>
+                    <button class="btn-plan active">Choose Plan</button>
+                </div>
+                <div class="plan-card" data-price-inr="740">
+                    <div class="plan-name">Gold</div>
+                    <div class="plan-price" data-price="740">₹740 <small>/mo</small></div>
+                    <ul class="plan-features">
+                        <li>✔ Instant deployment</li>
+                        <li>✔ DDoS protection</li>
+                        <li>✔ Priority support</li>
+                    </ul>
+                    <button class="btn-plan active">Choose Plan</button>
+                </div>
+                <div class="plan-card" data-price-inr="960">
+                    <div class="plan-name">Diamond</div>
+                    <div class="plan-price" data-price="960">₹960 <small>/mo</small></div>
+                    <ul class="plan-features">
+                        <li>✔ Instant deployment</li>
+                        <li>✔ DDoS protection</li>
+                        <li>✔ Max performance</li>
+                    </ul>
+                    <button class="btn-plan active">Choose Plan</button>
+                </div>
+                <div class="plan-card" data-price-inr="1380">
+                    <div class="plan-name">Bedrock</div>
+                    <div class="plan-price" data-price="1380">₹1,380 <small>/mo</small></div>
+                    <ul class="plan-features">
+                        <li>✔ Instant deployment</li>
+                        <li>✔ DDoS protection</li>
+                        <li>✔ Ultimate power</li>
+                    </ul>
+                    <button class="btn-plan active">Choose Plan</button>
+                </div>
+                <!-- Pro Plan – Coming Soon -->
+                <div class="plan-card coming-soon" data-price-inr="0">
+                    <div class="plan-name">Pro <span class="badge">Coming Soon</span></div>
+                    <div class="plan-price" data-price="0">—</div>
+                    <ul class="plan-features">
+                        <li>🚀 Extreme performance</li>
+                        <li>🔒 Enterprise DDoS</li>
+                        <li>⚡ Priority everything</li>
+                    </ul>
+                    <button class="btn-plan disabled">Notify Me</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="copyright">© 2026 FusionCloud. All rights reserved.</div>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="https://discord.gg/EHyjfqydYk" target="_blank">Discord</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ── Hamburger ──
+        const hamburger = document.getElementById('hamburger');
+        const mobileNav = document.getElementById('mobileNav');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            mobileNav.classList.toggle('open');
+        });
+
+        // ── Currency logic ──
+        const selects = [
+            document.getElementById('currencySelect'),
+            document.getElementById('currencySelectMobile')
+        ];
+        const exchangeRate = 1.6; // 1 INR = 1.6 NPR (approx)
+
+        function updatePrices(currency) {
+            const priceElements = document.querySelectorAll('[data-price]');
+            priceElements.forEach(el => {
+                const inr = parseFloat(el.closest('.plan-card').dataset.priceInr);
+                if (isNaN(inr)) {
+                    if (currency === 'NPR') {
+                        el.textContent = '—';
+                    } else {
+                        el.textContent = '—';
+                    }
+                    return;
+                }
+                let value = inr;
+                let symbol = '₹';
+                if (currency === 'NPR') {
+                    value = inr * exchangeRate;
+                    symbol = 'Rs.';
+                }
+                // Format with commas if needed
+                const formatted = value.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+                el.innerHTML = `${symbol}${formatted} <small>/mo</small>`;
+            });
+        }
+
+        selects.forEach(sel => {
+            sel.addEventListener('change', function() {
+                const val = this.value;
+                selects.forEach(other => { if (other !== this) other.value = val; });
+                localStorage.setItem('fusionCurrency', val);
+                updatePrices(val);
+            });
+        });
+
+        // Load saved
+        const saved = localStorage.getItem('fusionCurrency') || 'INR';
+        selects.forEach(sel => sel.value = saved);
+        updatePrices(saved);
+
+        // Expose for page handler
+        window.updatePricesHandler = updatePrices;
+    </script>
+</body>
+</html>
