@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FusionCloud – Premium Hosting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    /* ─── Full-width background with image ─── */
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #0b1a3a;
+      min-height: 100vh;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      color: #eef2f6;
+      line-height: 1.5;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ─── Background with image & overlay ─── */
+    .bg-animated {
+      min-height: 100vh;
+      width: 100%;
+      position: relative;
+      background-image: url('IMG_2659.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+    /* Dark overlay for readability – pointer-events: none so clicks pass through */
+    .bg-animated::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(11, 26, 58, 0.75);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .bg-animated > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ─── Header ─── */
+    header {
+      background: rgba(15, 20, 40, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo img {
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #f5a623;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: #bcc6dc;
+      transition: 0.2s;
+    }
+    .nav-links a:hover {
+      color: #f5a623;
+    }
+    .nav-links .panel-btn {
+      background: #f5a623;
+      color: #0b0e1a;
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: 0.2s;
+    }
+    .nav-links .panel-btn:hover {
+      background: #e09515;
+      color: #0b0e1a;
+    }
+    .nav-links .discord-btn {
+      background: #5865f2;
+      padding: 6px 18px;
+      border-radius: 20px;
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .nav-links .discord-btn:hover {
+      background: #4752c4;
+      color: #fff;
+    }
+    .currency-selector {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 6px;
+      padding: 6px 10px;
+      color: #bcc6dc;
+      font-weight: 500;
+      font-size: 0.85rem;
+      outline: none;
+      cursor: pointer;
+    }
+    .currency-selector option {
+      background: #0f1422;
+    }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 26px;
+      height: 2.5px;
+      background: #bcc6dc;
+      border-radius: 4px;
+      transition: 0.3s;
+    }
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+    .nav-links.mobile {
+      display: none;
+      flex-direction: column;
+      background: rgba(15,20,40,0.97);
+      position: absolute;
+      top: 82px;
+      left: 0;
+      right: 0;
+      padding: 24px 30px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      gap: 18px;
+      z-index: 199;
+    }
+    .nav-links.mobile.open {
+      display: flex;
+    }
+
+    /* ─── Hero ─── */
+    .hero {
+      padding: 80px 0 50px;
+      text-align: center;
+    }
+    .hero .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: rgba(88,101,242,0.12);
+      border: 1px solid rgba(88,101,242,0.35);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #a5b4fc;
+      margin-bottom: 28px;
+    }
+    .hero .eyebrow .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 10px #4ade80;
+      animation: pulse-dot 2s infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* ─── Two‑line hero heading ─── */
+    .hero-headline {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .static-line {
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      font-weight: 600;
+      color: #c8d0e0;
+      letter-spacing: -0.01em;
+    }
+    .rotating-line {
+      position: relative;
+      height: 1.2em;
+      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1.2;
+      min-width: 280px;
+    }
+    .rotating-line .word {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      background: linear-gradient(135deg, #f5a623, #ff8c00);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      white-space: nowrap;
+    }
+    .rotating-line .word.active {
+      opacity: 1;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: #9aa9c9;
+      max-width: 680px;
+      margin: 0 auto 32px;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 50px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 14px 34px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border: none;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+    .btn-primary {
+      background: #f5a623;
+      color: #0b0e1a;
+    }
+    .btn-primary:hover {
+      background: #e09515;
+      transform: scale(1.02);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 2px solid #f5a623;
+      color: #f5a623;
+    }
+    .btn-outline:hover {
+      background: #f5a623;
+      color: #0b0e1a;
+    }
+    .btn-discord {
+      background: #5865f2;
+      color: #fff;
+    }
+    .btn-discord:hover {
+      background: #4752c4;
+      transform: scale(1.02);
+    }
+    .btn-panel {
+      background: transparent;
+      border: 2px solid #f5a623;
+      color: #f5a623;
+    }
+    .btn-panel:hover {
+      background: #f5a623;
+      color: #0b0e1a;
+    }
+
+    /* ─── Stats Row ─── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      max-width: 880px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.06);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .stat-cell {
+      background: rgba(15,20,40,0.7);
+      padding: 24px 12px;
+      text-align: center;
+    }
+    .stat-num {
+      font-size: clamp(1.5rem, 3vw, 2.3rem);
+      font-weight: 800;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #f5a623, #ff8c00);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .stat-label {
+      font-size: 0.78rem;
+      color: #7a8aaa;
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    /* ─── Advanced Features ─── */
+    .advanced-features {
+      padding: 80px 0;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .section-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .section-sub {
+      text-align: center;
+      color: #7a8aaa;
+      margin-bottom: 44px;
+      font-size: 1.05rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .adv-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .adv-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      padding: 28px 22px;
+      transition: 0.3s;
+      border-left: 3px solid #f5a623;
+    }
+    .adv-card:hover {
+      border-color: #f5a623;
+      transform: translateY(-4px);
+    }
+    .adv-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .adv-card h3 i {
+      color: #f5a623;
+      margin-right: 8px;
+    }
+    .adv-card p {
+      color: #8a9bb5;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* ─── Get Started ─── */
+    .get-started {
+      padding: 80px 0;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .gs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+      margin-top: 10px;
+    }
+    .gs-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      padding: 28px 20px;
+      text-align: center;
+      transition: 0.3s;
+    }
+    .gs-card:hover {
+      border-color: #f5a623;
+      transform: translateY(-4px);
+    }
+    .gs-card .icon {
+      font-size: 2.4rem;
+      color: #f5a623;
+      margin-bottom: 12px;
+    }
+    .gs-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+    }
+    .gs-card p {
+      color: #8a9bb5;
+      font-size: 0.9rem;
+    }
+
+    /* ─── Footer ─── */
+    footer {
+      background: rgba(8,12,26,0.8);
+      padding: 40px 0 24px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    footer .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+    footer .copyright {
+      color: #4a5a7a;
+      font-size: 0.9rem;
+    }
+    footer .footer-links {
+      display: flex;
+      gap: 28px;
+    }
+    footer .footer-links a {
+      color: #6a7a94;
+      font-size: 0.9rem;
+      transition: 0.2s;
+    }
+    footer .footer-links a:hover {
+      color: #f5a623;
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 820px) {
+      .nav-links {
+        display: none;
+      }
+      .hamburger {
+        display: flex;
+      }
+      .nav-links.mobile {
+        display: none;
+      }
+      .nav-links.mobile.open {
+        display: flex;
+      }
+      .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .rotating-line {
+        min-width: 180px;
+        font-size: clamp(2.2rem, 5vw, 3rem);
+      }
+      .static-line {
+        font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+      }
+    }
+    @media (min-width: 821px) {
+      .nav-links.mobile {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-animated">
+    <!-- ===== HEADER ===== -->
+    <header>
+      <div class="container nav-wrap">
+        <a href="index.html" class="logo"><img src="d6c3627909947d21f2b6b2154185ab6e.webp" alt="FusionCloud" /></a>
+        <nav>
+          <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="minecraft.html">Minecraft</a></li>
+            <li><a href="vps.html">VPS</a></li>
+            <li><a href="https://panel.fusionclouds.qzz.io/" target="_blank" class="panel-btn"><i class="fa-solid fa-gauge-high"></i> Panel</a></li>
+            <li><a href="https://discord.gg/89ByFewMRR" target="_blank" class="discord-btn">Discord</a></li>
+            <li>
+              <select class="currency-selector" id="currencySelect">
+                <option value="INR">₹ INR</option>
+                <option value="NPR">रू NPR</option>
+              </select>
+            </li>
+          </ul>
+        </nav>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+      <ul class="nav-links mobile" id="mobileNav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="minecraft.html">Minecraft</a></li>
+        <li><a href="vps.html">VPS</a></li>
+        <li><a href="https://panel.fusionclouds.qzz.io/" target="_blank" class="panel-btn"><i class="fa-solid fa-gauge-high"></i> Panel</a></li>
+        <li><a href="https://discord.gg/89ByFewMRR" target="_blank" class="discord-btn">Discord</a></li>
+        <li>
+          <select class="currency-selector" id="currencySelectMobile">
+            <option value="INR">₹ INR</option>
+            <option value="NPR">रू NPR</option>
+          </select>
+        </li>
+      </ul>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+      <div class="container">
+        <div class="eyebrow"><span class="dot"></span> All systems operational — 99.99% uptime</div>
+
+        <!-- Two‑line heading -->
+        <div class="hero-headline">
+          <div class="static-line">Host your own</div>
+          <div class="rotating-line" id="rotatingWords">
+            <span class="word active">Minecraft Server</span>
+            <span class="word">VPS</span>
+          </div>
+        </div>
+
+        <p>FusionCloud delivers high-performance hosting for Minecraft servers and VPS — engineered for stability, low latency, and real-world workloads.</p>
+        <div class="hero-btns">
+          <a href="minecraft.html" class="btn btn-primary"><i class="fa-solid fa-rocket"></i> Get Started</a>
+          <a href="minecraft.html" class="btn btn-outline"><i class="fa-solid fa-list"></i> View Plans</a>
+          <a href="https://panel.fusionclouds.qzz.io/" target="_blank" class="btn btn-panel"><i class="fa-solid fa-gauge-high"></i> Client Panel</a>
+          <a href="https://discord.gg/89ByFewMRR" target="_blank" class="btn btn-discord"><i class="fa-brands fa-discord"></i> Join Discord</a>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-row">
+          <div class="stat-cell"><div class="stat-num">40</div><div class="stat-label">Servers Hosted</div></div>
+          <div class="stat-cell"><div class="stat-num">33</div><div class="stat-label">Active Clients</div></div>
+          <div class="stat-cell"><div class="stat-num">90</div><div class="stat-label">Discord Members</div></div>
+          <div class="stat-cell"><div class="stat-num">99.99%</div><div class="stat-label">Uptime</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ADVANCED FEATURES ===== -->
+    <section class="advanced-features">
+      <div class="container">
+        <h2 class="section-title">Advanced Features</h2>
+        <p class="section-sub">Everything you need for professional Minecraft and VPS hosting — optimized for speed, stability and control.</p>
+        <div class="adv-grid">
+          <div class="adv-card">
+            <h3><i class="fa-solid fa-gauge-high"></i> High Performance</h3>
+            <p>Powered by modern Intel and AMD processors, tuned for maximum Minecraft and VPS performance.</p>
+          </div>
+          <div class="adv-card">
+            <h3><i class="fa-solid fa-globe"></i> Low Latency</h3>
+            <p>Optimized routing and premium peering ensure minimal lag and ultra-fast response times.</p>
+          </div>
+          <div class="adv-card">
+            <h3><i class="fa-solid fa-shield-halved"></i> Advanced Security</h3>
+            <p>Multi-layer DDoS protection, firewalling and real-time threat detection to keep your servers online 24/7.</p>
+          </div>
+          <div class="adv-card">
+            <h3><i class="fa-solid fa-rotate-left"></i> Auto Recovery</h3>
+            <p>Automatic crash recovery and scheduled backups so your data and uptime stay protected.</p>
+          </div>
+          <div class="adv-card">
+            <h3><i class="fa-solid fa-sliders"></i> Full Control</h3>
+            <p>Powerful web panel with file manager, console, version changer, and advanced startup controls.</p>
+          </div>
+          <div class="adv-card">
+            <h3><i class="fa-solid fa-arrow-up-wide-short"></i> Resource Scaling</h3>
+            <p>Upgrade or downgrade RAM and CPU instantly as your server grows.</p>
+          </div>
+          <div class="adv-card">
+            <h3><i class="fa-solid fa-network-wired"></i> Global Network</h3>
+            <p>Strategically located nodes in India, Singapore, and Europe for best connectivity.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== GET STARTED ===== -->
+    <section class="get-started">
+      <div class="container">
+        <h2 class="section-title">Get Started</h2>
+        <p class="section-sub">Launch your server in minutes — with everything you need built in.</p>
+        <div class="gs-grid">
+          <div class="gs-card">
+            <div class="icon"><i class="fa-solid fa-bolt"></i></div>
+            <h3>Instant Deployment</h3>
+            <p>Your server is online in under 60 seconds.</p>
+          </div>
+          <div class="gs-card">
+            <div class="icon"><i class="fa-solid fa-shield"></i></div>
+            <h3>Built‑in DDoS Protection</h3>
+            <p>Always‑on protection at the network edge.</p>
+          </div>
+          <div class="gs-card">
+            <div class="icon"><i class="fa-solid fa-headset"></i></div>
+            <h3>Real 24/7 Support</h3>
+            <p>Talk to real humans, not auto‑bots.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+      <div class="container">
+        <div class="copyright">© 2026 FusionCloud. All rights reserved.</div>
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="https://panel.fusionclouds.qzz.io/" target="_blank">Client Panel</a>
+          <a href="https://discord.gg/89ByFewMRR" target="_blank">Discord</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // ─── Rotating text (2.5 seconds) ───
+    const words = document.querySelectorAll('.rotating-line .word');
+    let current = 0;
+    setInterval(() => {
+      words.forEach(w => w.classList.remove('active'));
+      current = (current + 1) % words.length;
+      words[current].classList.add('active');
+    }, 2500);
+
+    // ─── Hamburger ───
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobileNav');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      mobileNav.classList.toggle('open');
+    });
+
+    // ─── Currency sync with रू symbol ───
+    const selects = [
+      document.getElementById('currencySelect'),
+      document.getElementById('currencySelectMobile')
+    ];
+    const rate = 1.6;
+    function updatePrices(currency) {
+      document.querySelectorAll('[data-price]').forEach(el => {
+        const base = parseFloat(el.closest('[data-base]')?.dataset.base || el.dataset.base);
+        if (!base) return;
+        let val = base, sym = '₹';
+        if (currency === 'NPR') { val = base * rate; sym = 'रू'; }
+        el.innerHTML = `${sym}${Math.round(val).toLocaleString('en-IN')} <small>/mo</small>`;
+      });
+    }
+    selects.forEach(sel => {
+      sel.addEventListener('change', function() {
+        const v = this.value;
+        selects.forEach(o => { if (o !== this) o.value = v; });
+        localStorage.setItem('fusionCurrency', v);
+        updatePrices(v);
+      });
+    });
+    const saved = localStorage.getItem('fusionCurrency') || 'INR';
+    selects.forEach(sel => sel.value = saved);
+    setTimeout(() => updatePrices(saved), 100);
+  </script>
+</body>
+</html>
