@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FusionCloud – Login & Register</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background: #0b0e1a;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .login-card {
+      background: #111827;
+      border: 1px solid #1f2740;
+      border-radius: 24px;
+      padding: 48px 36px;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    }
+    .login-card .logo {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 24px;
+      display: block;
+      border: 3px solid #f5a623;
+    }
+    .login-card h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #eef2f6;
+      margin-bottom: 4px;
+    }
+    .login-card .subtitle {
+      color: #7a8aaa;
+      font-size: 0.95rem;
+      margin-bottom: 28px;
+    }
+    .login-card label {
+      display: block;
+      text-align: left;
+      color: #bcc6dc;
+      font-weight: 500;
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+    }
+    .login-card input {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px solid #1f2740;
+      background: #0b0e1a;
+      color: #eef2f6;
+      font-size: 1rem;
+      margin-bottom: 18px;
+      outline: none;
+      transition: 0.2s;
+    }
+    .login-card input:focus {
+      border-color: #f5a623;
+      box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.2);
+    }
+    .login-card .btn-action {
+      background: #f5a623;
+      color: #0b0e1a;
+      border: none;
+      padding: 14px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 1rem;
+      width: 100%;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .login-card .btn-action:hover {
+      background: #e09515;
+    }
+    .login-card .toggle-link {
+      color: #f5a623;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 16px;
+      display: inline-block;
+      background: none;
+      border: none;
+      font-size: 0.95rem;
+      text-decoration: underline;
+    }
+    .login-card .toggle-link:hover {
+      color: #d49400;
+    }
+    .login-card .error {
+      color: #ff5a5a;
+      font-size: 0.85rem;
+      margin-top: 8px;
+      display: none;
+    }
+    .login-card .success {
+      color: #4ade80;
+      font-size: 0.85rem;
+      margin-top: 8px;
+      display: none;
+    }
+    .form-group {
+      display: none;
+    }
+    .form-group.active {
+      display: block;
+    }
+    .login-card .switch-label {
+      margin: 16px 0 4px;
+      font-size: 0.9rem;
+      color: #7a8aaa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-card">
+    <img src="d6c3627909947d21f2b6b2154185ab6e.webp" alt="FusionCloud" class="logo" />
+    <h1>FusionCloud</h1>
+    <p class="subtitle" id="formTitle">Sign in to your account</p>
+
+    <!-- Login Form -->
+    <div class="form-group active" id="loginFormGroup">
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <label for="loginEmail">Email Address</label>
+        <input type="email" id="loginEmail" placeholder="you@example.com" required />
+
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" placeholder="••••••••" required />
+
+        <button type="submit" class="btn-action">Log In</button>
+        <div class="error" id="loginError">Invalid email or password.</div>
+      </form>
+      <div class="switch-label">Don't have an account?</div>
+      <button class="toggle-link" onclick="showRegister()">Create one here</button>
+    </div>
+
+    <!-- Register Form -->
+    <div class="form-group" id="registerFormGroup">
+      <form id="registerForm" onsubmit="handleRegister(event)">
+        <label for="regEmail">Email Address</label>
+        <input type="email" id="regEmail" placeholder="you@example.com" required />
+
+        <label for="regPassword">Password</label>
+        <input type="password" id="regPassword" placeholder="••••••••" required minlength="4" />
+
+        <label for="regConfirm">Confirm Password</label>
+        <input type="password" id="regConfirm" placeholder="••••••••" required />
+
+        <button type="submit" class="btn-action">Register</button>
+        <div class="error" id="registerError">Passwords do not match or user exists.</div>
+        <div class="success" id="registerSuccess">Account created! Please log in.</div>
+      </form>
+      <div class="switch-label">Already have an account?</div>
+      <button class="toggle-link" onclick="showLogin()">Sign in here</button>
+    </div>
+  </div>
+
+  <script>
+    // ─── Toggle between login and register ───
+    function showRegister() {
+      document.getElementById('loginFormGroup').classList.remove('active');
+      document.getElementById('registerFormGroup').classList.add('active');
+      document.getElementById('formTitle').textContent = 'Create your account';
+      // Clear errors
+      document.getElementById('loginError').style.display = 'none';
+      document.getElementById('registerError').style.display = 'none';
+      document.getElementById('registerSuccess').style.display = 'none';
+    }
+
+    function showLogin() {
+      document.getElementById('registerFormGroup').classList.remove('active');
+      document.getElementById('loginFormGroup').classList.add('active');
+      document.getElementById('formTitle').textContent = 'Sign in to your account';
+      document.getElementById('loginError').style.display = 'none';
+      document.getElementById('registerError').style.display = 'none';
+      document.getElementById('registerSuccess').style.display = 'none';
+    }
+
+    // ─── Login handler ───
+    function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+      const errorEl = document.getElementById('loginError');
+
+      // Check if user exists in localStorage
+      const users = JSON.parse(localStorage.getItem('fusionUsers') || '{}');
+      if (users[email] && users[email] === password) {
+        localStorage.setItem('fusionLoggedIn', 'true');
+        localStorage.setItem('fusionUser', email);
+        window.location.href = 'index.html';
+      } else {
+        errorEl.style.display = 'block';
+        errorEl.textContent = 'Invalid email or password.';
+      }
+    }
+
+    // ─── Register handler ───
+    function handleRegister(e) {
+      e.preventDefault();
+      const email = document.getElementById('regEmail').value.trim();
+      const password = document.getElementById('regPassword').value.trim();
+      const confirm = document.getElementById('regConfirm').value.trim();
+      const errorEl = document.getElementById('registerError');
+      const successEl = document.getElementById('registerSuccess');
+
+      // Reset messages
+      errorEl.style.display = 'none';
+      successEl.style.display = 'none';
+
+      if (password !== confirm) {
+        errorEl.style.display = 'block';
+        errorEl.textContent = 'Passwords do not match.';
+        return;
+      }
+
+      if (password.length < 4) {
+        errorEl.style.display = 'block';
+        errorEl.textContent = 'Password must be at least 4 characters.';
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('fusionUsers') || '{}');
+      if (users[email]) {
+        errorEl.style.display = 'block';
+        errorEl.textContent = 'User already exists. Please log in.';
+        return;
+      }
+
+      // Save user
+      users[email] = password;
+      localStorage.setItem('fusionUsers', JSON.stringify(users));
+      successEl.style.display = 'block';
+      successEl.textContent = 'Account created! You can now log in.';
+      // Optionally clear fields
+      document.getElementById('regEmail').value = '';
+      document.getElementById('regPassword').value = '';
+      document.getElementById('regConfirm').value = '';
+      // Switch to login after short delay
+      setTimeout(() => {
+        showLogin();
+        document.getElementById('loginEmail').value = email;
+        successEl.style.display = 'none';
+      }, 1500);
+    }
+
+    // ─── Auto-redirect if already logged in ───
+    if (localStorage.getItem('fusionLoggedIn') === 'true') {
+      window.location.href = 'index.html';
+    }
+  </script>
+
+</body>
+</html>
